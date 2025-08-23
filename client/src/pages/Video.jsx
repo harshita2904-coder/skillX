@@ -2,16 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import BackButton from '../components/BackButton';
+import { apiGet } from '../utils/api.js';
 import io from 'socket.io-client';
 
-const api = async (path, opts = {}) => {
-  const token = localStorage.getItem('token');
-  const res = await fetch(`https://skillx-production-5d56.up.railway.app${path}`, {
-    ...opts,
-    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', ...(opts.headers || {}) }
-  });
-  return res;
-};
+const API_BASE = 'https://skillx-production-5d56.up.railway.app';
 
 const Video = () => {
   const { matchId } = useParams();
@@ -48,7 +42,7 @@ const Video = () => {
 
   const checkActiveSession = async () => {
     try {
-      const res = await api(`/sessions/active/${matchId}`);
+      const res = await apiGet(`${API_BASE}/sessions/active/${matchId}`);
       if (res.ok) {
         const s = await res.json();
         setActiveSession(s);
@@ -204,7 +198,7 @@ const Video = () => {
 
   const fetchMatchData = async () => {
     try {
-      const res = await api(`/matches/${matchId}`);
+      const res = await apiGet(`${API_BASE}/matches/${matchId}`);
       if (res.ok) setMatchData(await res.json());
     } catch (error) { console.error('Error fetching match data:', error); }
     finally { setLoading(false); }
