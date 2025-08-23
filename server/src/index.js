@@ -67,9 +67,12 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
   if (req.method === 'OPTIONS') {
     return res.sendStatus(204);
-  }
-  next();
+  }
+  next();
 });
+
+app.use(cors(corsOptions));     // applies to all requests
+app.options('*', cors(corsOptions));
 app.use(helmet());
 app.use(express.json({ limit: '2mb' }));
 app.use(morgan('dev'));
