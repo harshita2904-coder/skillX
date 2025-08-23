@@ -61,7 +61,7 @@ const Profile = () => {
     
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('https://skillx-production-5d56.up.railway.app/users/profile', {
+      const response = await fetch('https://skillx-i9on.onrender.com/users/profile', {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

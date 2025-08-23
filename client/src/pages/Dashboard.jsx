@@ -33,7 +33,7 @@ const Dashboard = () => {
   const fetchUserStats = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('https://skillx-production-5d56.up.railway.app/users/stats', {
+      const response = await fetch('https://skillx-i9on.onrender.com/users/stats', {
         headers: {
           'Authorization': `Bearer ${token}`
         }

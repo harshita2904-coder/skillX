@@ -5,7 +5,7 @@ import BackButton from '../components/BackButton';
 import { apiGet } from '../utils/api.js';
 import io from 'socket.io-client';
 
-const API_BASE = 'https://skillx-production-5d56.up.railway.app';
+const API_BASE = 'https://skillx-i9on.onrender.com';
 
 const Video = () => {
   const { matchId } = useParams();
@@ -58,7 +58,7 @@ const Video = () => {
   };
 
   const initSocket = () => {
-    const socket = io('https://skillx-production-5d56.up.railway.app', { auth: { token: localStorage.getItem('token') } });
+    const socket = io('https://skillx-i9on.onrender.com', { auth: { token: localStorage.getItem('token') } });
     socketRef.current = socket;
     
     // Add connection status debugging
@@ -687,7 +687,7 @@ const Video = () => {
                 className="flex items-center px-8 py-4 bg-green-600 text-white rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 <svg className="h-6 w-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
                 <span className="text-lg font-medium">
                   {activeSession ? 'Join Call' : 'Start Call'}

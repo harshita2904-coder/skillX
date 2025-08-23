@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'https://skillx-production-5d56.up.railway.app';
+const API_URL = 'https://skillx-i9on.onrender.com';
 
 // Configure axios defaults for CORS
 axios.defaults.withCredentials = true;
