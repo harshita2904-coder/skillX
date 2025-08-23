@@ -26,7 +26,7 @@ const AIMentorChat = ({ isOpen, onClose }) => {
   const loadWelcomeMessage = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:4000/dialogflow/welcome/${user._id}`, {
+      const response = await fetch(`https://skillx-production-5d56.up.railway.app/dialogflow/welcome/${user._id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -63,7 +63,7 @@ const AIMentorChat = ({ isOpen, onClose }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:4000/dialogflow/message', {
+      const response = await fetch('https://skillx-production-5d56.up.railway.app/dialogflow/message', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

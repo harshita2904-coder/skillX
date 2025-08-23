@@ -35,7 +35,7 @@ const Admin = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:4000/admin/tests', {
+      const response = await fetch('https://skillx-production-5d56.up.railway.app/admin/tests', {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -53,7 +53,7 @@ const Admin = () => {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:4000/admin/dashboard', {
+      const response = await fetch('https://skillx-production-5d56.up.railway.app/admin/dashboard', {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -70,7 +70,7 @@ const Admin = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:4000/admin/tests', {
+      const response = await fetch('https://skillx-production-5d56.up.railway.app/admin/tests', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -125,7 +125,7 @@ const Admin = () => {
   const toggleTestStatus = async (testId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:4000/admin/tests/${testId}/toggle`, {
+      const response = await fetch(`https://skillx-production-5d56.up.railway.app/admin/tests/${testId}/toggle`, {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -143,7 +143,7 @@ const Admin = () => {
     
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:4000/admin/tests/${testId}`, {
+      const response = await fetch(`https://skillx-production-5d56.up.railway.app/admin/tests/${testId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });

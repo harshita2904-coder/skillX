@@ -51,7 +51,7 @@ const Chat = () => {
   const fetchMatchData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:4000/matches/${matchId}`, {
+      const response = await fetch(`https://skillx-production-5d56.up.railway.app/matches/${matchId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -69,7 +69,7 @@ const Chat = () => {
   const fetchMessages = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:4000/matches/${matchId}/messages`, {
+      const response = await fetch(`https://skillx-production-5d56.up.railway.app/matches/${matchId}/messages`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -87,7 +87,7 @@ const Chat = () => {
   };
 
   const initializeSocket = () => {
-    const socket = io('http://localhost:4000', {
+    const socket = io('https://skillx-production-5d56.up.railway.app', {
       auth: { token: localStorage.getItem('token') }
     });
     socketRef.current = socket;
@@ -140,7 +140,7 @@ const Chat = () => {
     setSending(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:4000/matches/${matchId}/messages`, {
+      const response = await fetch(`https://skillx-production-5d56.up.railway.app/matches/${matchId}/messages`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

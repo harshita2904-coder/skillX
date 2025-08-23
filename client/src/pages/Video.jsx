@@ -6,7 +6,7 @@ import io from 'socket.io-client';
 
 const api = async (path, opts = {}) => {
   const token = localStorage.getItem('token');
-  const res = await fetch(`http://localhost:4000${path}`, {
+  const res = await fetch(`https://skillx-production-5d56.up.railway.app${path}`, {
     ...opts,
     headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', ...(opts.headers || {}) }
   });
@@ -64,7 +64,7 @@ const Video = () => {
   };
 
   const initSocket = () => {
-    const socket = io('http://localhost:4000', { auth: { token: localStorage.getItem('token') } });
+    const socket = io('https://skillx-production-5d56.up.railway.app', { auth: { token: localStorage.getItem('token') } });
     socketRef.current = socket;
     
     // Add connection status debugging

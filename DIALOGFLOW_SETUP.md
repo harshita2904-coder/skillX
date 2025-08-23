@@ -136,7 +136,7 @@ Create the following intents in your Dialogflow agent:
 ## Step 8: Webhook Fulfillment (Flows + Integrations)
 
 - Your webhook endpoint is:
-  - `POST http://localhost:4000/dialogflow/webhook`
+  - `POST https://skillx-production-5d56.up.railway.app/dialogflow/webhook`
 - Enable fulfillment for an intent in Dialogflow and set the webhook URL in Dialogflow Console > Fulfillment.
 - The webhook returns both `fulfillmentText` and a `payload.skillx` object that includes structured data like `skillRecommendations`, `learningPath`, `matchSuggestions`, etc., so you can drive rich responses in channels that support custom payloads.
 - To associate answers with a logged-in user, pass `userId` into context parameters or `originalDetectIntentRequest.payload.userId` from your integration.

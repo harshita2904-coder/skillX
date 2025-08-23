@@ -26,7 +26,7 @@ const Tests = () => {
   const fetchTests = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:4000/tests', {
+      const response = await fetch('https://skillx-production-5d56.up.railway.app/tests', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -56,7 +56,7 @@ const Tests = () => {
     setSubmitting(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:4000/tests/run', {
+      const response = await fetch('https://skillx-production-5d56.up.railway.app/tests/run', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -85,7 +85,7 @@ const Tests = () => {
     setSubmitting(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:4000/tests/submit', {
+      const response = await fetch('https://skillx-production-5d56.up.railway.app/tests/submit', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

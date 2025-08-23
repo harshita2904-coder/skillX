@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:4000';
+const API_URL = 'https://skillx-production-5d56.up.railway.app';
 
 // Async thunks
 export const login = createAsyncThunk(

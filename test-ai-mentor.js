@@ -5,7 +5,7 @@
  * This script tests the AI mentor functionality
  */
 
-const BASE_URL = 'http://localhost:4000';
+const BASE_URL = 'https://skillx-production-5d56.up.railway.app';
 
 // Test messages
 const testMessages = [

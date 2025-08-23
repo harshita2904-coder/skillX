@@ -85,7 +85,7 @@ A web platform where people exchange skills instead of money. Users can list wha
 
 6. **Open your browser**
    - Frontend: http://localhost:5173
-   - Backend API: http://localhost:4000
+   - Backend API: https://skillx-production-5d56.up.railway.app
 
 ## Usage
 

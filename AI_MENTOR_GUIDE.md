@@ -177,7 +177,7 @@ node test-ai-mentor.js
 ### **Test the Implementation**
 ```bash
 # Test API endpoints
-curl http://localhost:4000/dialogflow/test
+curl https://skillx-production-5d56.up.railway.app/dialogflow/test
 
 # Run automated tests
 node test-ai-mentor.js
