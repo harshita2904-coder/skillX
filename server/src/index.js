@@ -59,7 +59,7 @@ const corsOptions = {
     console.log('CORS check for origin:', origin);
     console.log('Allowed origins:', allowedOrigins);
     
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       console.log('CORS blocked origin:', origin);
@@ -110,7 +110,20 @@ app.get('/test-cors', (req, res) => {
   res.json({ 
     message: 'CORS test successful',
     origin: req.headers.origin,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    allowedOrigins: allowedOrigins
+  });
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString(),
+    cors: {
+      allowedOrigins: allowedOrigins,
+      origin: req.headers.origin
+    }
   });
 });
 
@@ -139,5 +152,6 @@ console.log('PORT:', PORT);
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('CLIENT_ORIGIN:', process.env.CLIENT_ORIGIN);
 console.log('Allowed Origins:', allowedOrigins);
+console.log('MongoDB URI:', MONGO_URI ? 'Set' : 'Not set');
 
 server.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
