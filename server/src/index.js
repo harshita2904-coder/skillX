@@ -40,10 +40,18 @@ app.use((req, res, next) => {
 });
 
 // Basic middlewares
-app.use(cors({ 
-  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'], 
-  credentials: true 
-}));
+const corsOptions = {
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175',
+    'https://skill-x-client.vercel.app'
+  ],
+  credentials: true
+};
+
+app.use(cors(corsOptions));     // applies to all requests
+app.options('*', cors(corsOptions));
 app.use(helmet());
 app.use(express.json({ limit: '2mb' }));
 app.use(morgan('dev'));
