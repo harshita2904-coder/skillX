@@ -25,8 +25,7 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:5175',
-  'https://skill-x-client.vercel.app',
-  process.env.CLIENT_ORIGIN
+  'https://skill-x-client.vercel.app'
 ].filter(Boolean); // Remove any undefined values
 
 const io = new SocketIOServer(server, {
@@ -77,10 +76,36 @@ const corsOptions = {
 // Apply CORS FIRST, before any other middleware
 app.use(cors(corsOptions));
 
+// Explicit OPTIONS handler for all routes
+app.options('*', (req, res) => {
+  console.log('=== PREFLIGHT REQUEST ===');
+  console.log('Origin:', req.headers.origin);
+  console.log('Method:', req.headers['access-control-request-method']);
+  console.log('Headers:', req.headers['access-control-request-headers']);
+  
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    console.log('Set Access-Control-Allow-Origin to:', origin);
+  }
+  
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Origin, Accept, X-Forwarded-For, X-Forwarded-Proto');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Max-Age', '86400');
+  
+  console.log('Preflight response sent');
+  res.sendStatus(204);
+});
+
 // Add debugging middleware for CORS issues
 app.use((req, res, next) => {
-  console.log('Request origin:', req.headers.origin);
-  console.log('Request method:', req.method);
+  console.log('=== REQUEST DEBUG ===');
+  console.log('URL:', req.url);
+  console.log('Method:', req.method);
+  console.log('Origin:', req.headers.origin);
+  console.log('User-Agent:', req.headers['user-agent']);
+  console.log('====================');
   next();
 });
 
