@@ -47,11 +47,29 @@ const corsOptions = {
     'http://localhost:5175',
     'https://skill-x-client.vercel.app'
   ],
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  exposedHeaders: ['Content-Length', 'Content-Type'],
+  optionsSuccessStatus: 204,
+  preflightContinue: false
 };
 
-app.use(cors(corsOptions));     // applies to all requests
-app.options('*', cors(corsOptions));
+// Ensure CORS headers are always set and preflight is handled
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && corsOptions.origin.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Vary', 'Origin');
+  }
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+});
 app.use(helmet());
 app.use(express.json({ limit: '2mb' }));
 app.use(morgan('dev'));
