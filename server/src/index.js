@@ -40,13 +40,16 @@ app.use((req, res, next) => {
 });
 
 // Basic middlewares
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175',
+  'https://skill-x-client.vercel.app'
+];
+
 const corsOptions = {
-  origin: [
-    'http://localhost:5173',
-    'http://localhost:5174',
-    'http://localhost:5175',
-    'https://skill-x-client.vercel.app'
-  ],
+  // Reflect request origin to ensure header is always present for browsers
+  origin: true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
@@ -58,9 +61,9 @@ const corsOptions = {
 // Ensure CORS headers are always set and preflight is handled
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  if (origin && corsOptions.origin.includes(origin)) {
+  if (origin) {
     res.header('Access-Control-Allow-Origin', origin);
-    res.header('Vary', 'Origin');
+    res.header('Vary', 'Origin, Access-Control-Request-Headers, Access-Control-Request-Method');
   }
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
