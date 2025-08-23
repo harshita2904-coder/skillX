@@ -31,6 +31,7 @@ const io = new SocketIOServer(server, {
 
 // Disable ETag to avoid 304 Not Modified for API responses
 app.set('etag', false);
+
 // Global no-cache headers for API
 app.use((req, res, next) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -48,8 +49,21 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-  // Reflect request origin to ensure header is always present for browsers
-  origin: true,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // For debugging, allow all origins temporarily
+    console.log('CORS check for origin:', origin);
+    callback(null, true);
+    
+    // Uncomment the following for production security
+    // if (allowedOrigins.indexOf(origin) !== -1) {
+    //   callback(null, true);
+    // } else {
+    //   callback(new Error('Not allowed by CORS'));
+    // }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
@@ -58,25 +72,22 @@ const corsOptions = {
   preflightContinue: false
 };
 
-// Ensure CORS headers are always set and preflight is handled
+// Apply CORS FIRST, before any other middleware
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
+// Add debugging middleware for CORS issues
 app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (origin) {
-    res.header('Access-Control-Allow-Origin', origin);
-    res.header('Vary', 'Origin, Access-Control-Request-Headers, Access-Control-Request-Method');
-  }
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(204);
-  }
+  console.log('Request origin:', req.headers.origin);
+  console.log('Request method:', req.method);
+  console.log('Request headers:', req.headers);
   next();
 });
 
-app.use(cors(corsOptions));     // applies to all requests
-app.options('*', cors(corsOptions));
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  crossOriginEmbedderPolicy: false
+}));
 app.use(express.json({ limit: '2mb' }));
 app.use(morgan('dev'));
 
@@ -90,6 +101,7 @@ mongoose.connect(MONGO_URI).then(() => {
 
 // Routes
 app.get('/', (req, res) => res.json({ ok: true, service: 'SkillX API' }));
+
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/matches', matchRoutes);
