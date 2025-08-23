@@ -6,6 +6,6 @@
     "server"
   ],
   "scripts": {
-    "start": "cd server && npm start"
+    "start": "npm run start -w server"
   }
 }

@@ -21,12 +21,23 @@ import { registerChatHandlers } from './utils/socketChat.js';
 
 const app = express();
 const server = http.createServer(app);
-const allowedOrigins = [
+// Base allowed origins for local dev and known client
+const baseAllowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:5175',
   'https://skill-x-client.vercel.app'
-].filter(Boolean); // Remove any undefined values
+];
+
+// Extend with environment-provided origins (comma-separated)
+const envAllowedOrigins = [
+  process.env.CLIENT_ORIGIN,
+  process.env.RAILWAY_STATIC_URL,
+  ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',').map(s => s.trim()) : [])
+];
+
+// Final list with falsy removed and duplicates eliminated
+const allowedOrigins = Array.from(new Set([...baseAllowedOrigins, ...envAllowedOrigins].filter(Boolean)));
 
 const io = new SocketIOServer(server, {
   cors: { 
