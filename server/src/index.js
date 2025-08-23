@@ -24,7 +24,7 @@ const server = http.createServer(app);
 
 const io = new SocketIOServer(server, {
   cors: { 
-    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'], 
+    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175','https://skill-x-client.vercel.app'], 
     methods: ['GET','POST'] 
   }
 });
