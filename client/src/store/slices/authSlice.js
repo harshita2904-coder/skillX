@@ -3,12 +3,18 @@ import axios from 'axios';
 
 const API_URL = 'https://skillx-production-5d56.up.railway.app';
 
+// Configure axios defaults for CORS
+axios.defaults.withCredentials = true;
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+
 // Async thunks
 export const login = createAsyncThunk(
   'auth/login',
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, credentials);
+      const response = await axios.post(`${API_URL}/auth/login`, credentials, {
+        withCredentials: true
+      });
       localStorage.setItem('token', response.data.token);
       return response.data;
     } catch (error) {
@@ -21,7 +27,9 @@ export const signup = createAsyncThunk(
   'auth/signup',
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/signup`, userData);
+      const response = await axios.post(`${API_URL}/auth/signup`, userData, {
+        withCredentials: true
+      });
       localStorage.setItem('token', response.data.token);
       return response.data;
     } catch (error) {
@@ -40,7 +48,8 @@ export const getCurrentUser = createAsyncThunk(
       }
       
       const response = await axios.get(`${API_URL}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true
       });
       return response.data;
     } catch (error) {

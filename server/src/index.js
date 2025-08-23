@@ -72,7 +72,7 @@ const corsOptions = {
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Origin', 'Accept'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Origin', 'Accept', 'X-Forwarded-For', 'X-Forwarded-Proto'],
   exposedHeaders: ['Content-Length', 'Content-Type'],
   optionsSuccessStatus: 204,
   preflightContinue: false
@@ -90,15 +90,20 @@ app.use((req, res, next) => {
   next();
 });
 
-// Ensure CORS headers are set on all responses
+// Ensure CORS headers are set on all responses - AFTER cors package
 app.use((req, res, next) => {
   const origin = req.headers.origin;
+  console.log('Setting CORS headers for origin:', origin);
+  
   if (origin) {
     res.header('Access-Control-Allow-Origin', origin);
+    console.log('Set Access-Control-Allow-Origin to:', origin);
   }
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Origin, Accept');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Origin, Accept, X-Forwarded-For, X-Forwarded-Proto');
+  
+  console.log('CORS headers set for request to:', req.url);
   next();
 });
 
@@ -120,6 +125,17 @@ mongoose.connect(MONGO_URI).then(() => {
 // Routes
 app.get('/', (req, res) => res.json({ ok: true, service: 'SkillX API' }));
 
+// Test CORS endpoint
+app.get('/test-cors', (req, res) => {
+  console.log('Test CORS endpoint called');
+  console.log('Origin:', req.headers.origin);
+  res.json({ 
+    message: 'CORS test successful',
+    origin: req.headers.origin,
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Explicit preflight handler for all routes
 app.options('*', (req, res) => {
   console.log('Preflight request received for:', req.url);
@@ -128,7 +144,7 @@ app.options('*', (req, res) => {
   // Set CORS headers explicitly
   res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Origin, Accept');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Origin, Accept, X-Forwarded-For, X-Forwarded-Proto');
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Max-Age', '86400'); // 24 hours
   

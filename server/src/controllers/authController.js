@@ -53,6 +53,11 @@ export const signup = async (req, res) => {
 };
 
 export const login = async (req, res) => {
+  console.log('Login function called');
+  console.log('Request origin:', req.headers.origin);
+  console.log('Request method:', req.method);
+  console.log('Request body:', req.body);
+  
   try {
     const { email, password } = req.body;
 
