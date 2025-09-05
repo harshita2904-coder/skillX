@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Interview Q&amp;A for Freshers: Databases, OOP, OS, Networks</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --text: #1f2937;
+    --muted: #4b5563;
+    --accent: #0f766e;
+    --bg: #ffffff;
+    --code-bg: #f8fafc;
+    --border: #e5e7eb;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.55;
+    font-size: 14px;
+  }
+  .container {
+    max-width: 900px;
+    margin: 28px auto;
+    padding: 0 20px;
+  }
+  h1, h2, h3 {
+    line-height: 1.25;
+    margin: 0 0 10px 0;
+  }
+  h1 {
+    font-size: 26px; margin-bottom: 8px; color: #111827;
+  }
+  .subtitle { color: var(--muted); margin-bottom: 24px; }
+  h2 {
+    font-size: 20px; color: var(--accent);
+    border-top: 1px solid var(--border);
+    padding-top: 18px; margin-top: 24px;
+  }
+  h2:first-of-type {
+    border-top: 0; padding-top: 0; margin-top: 0;
+  }
+  h3 { font-size: 16px; margin-top: 16px; }
+  p { margin: 6px 0 10px 0; }
+  ul { margin: 6px 0 10px 22px; }
+  li { margin: 4px 0; }
+  code, pre, kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+  code {
+    background: var(--code-bg); padding: 1px 4px; border-radius: 4px; border: 1px solid var(--border);
+  }
+  pre {
+    background: var(--code-bg); border: 1px solid var(--border);
+    padding: 10px 12px; border-radius: 6px; overflow: auto; margin: 8px 0 12px 0;
+  }
+  pre code { border: 0; padding: 0; background: transparent; }
+  .qa { margin-bottom: 12px; }
+  .answer-label { font-weight: 600; color: #111827; }
+  .tip { color: var(--muted); font-style: italic; }
+  .kbd { border: 1px solid var(--border); padding: 1px 4px; border-radius: 4px; background: #fff; }
+  .small { font-size: 12px; color: var(--muted); }
+  .section-note { color: var(--muted); margin-top: -2px; margin-bottom: 10px; }
+  @media print {
+    a { color: inherit; text-decoration: none; }
+    h2 { page-break-before: always; }
+    h2:first-of-type { page-break-before: avoid; }
+    pre, blockquote, table { page-break-inside: avoid; }
+    .container { margin: 0; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Interview Q&amp;A for Freshers</h1>
+    <div class="subtitle">Databases (SQL &amp; NoSQL), OOP, Operating Systems, Computer Networks</div>
+
+    <h2>Databases (SQL and NoSQL)</h2>
+    <div class="section-note small">Key comparisons, design trade-offs, and practical examples.</div>
+
+    <div class="qa">
+      <h3>What’s the difference between SQL and NoSQL? When to use each?</h3>
+      <p><span class="answer-label">Answer:</span> SQL databases are relational, schema-on-write, and ACID-compliant—best for transactional apps needing strict consistency and complex joins (e.g., banking). NoSQL databases are non-relational, flexible schema, distributed, and often favor horizontal scalability and availability—best for large-scale, evolving data and high write throughput.</p>
+      <ul>
+        <li><b>SQL examples</b>: PostgreSQL, MySQL, SQL Server.</li>
+        <li><b>NoSQL examples</b>: MongoDB (document), Redis (key-value), Cassandra (wide-column), Neo4j (graph).</li>
+      </ul>
+    </div>
+
+    <div class="qa">
+      <h3>Normalization (1NF, 2NF, 3NF, BCNF)—what and why?</h3>
+      <p><span class="answer-label">Answer:</span> Normalization reduces redundancy and update anomalies.</p>
+      <ul>
+        <li><b>1NF</b>: Atomic columns; no repeating groups.</li>
+        <li><b>2NF</b>: 1NF + no partial dependency on a composite key.</li>
+        <li><b>3NF</b>: 2NF + no transitive dependency on the key.</li>
+        <li><b>BCNF</b>: For every dependency X→Y, X is a super key.</li>
+      </ul>
+    </div>
+
+    <div class="qa">
+      <h3>Normalization vs denormalization—trade-offs?</h3>
+      <p><span class="answer-label">Answer:</span> Normalization improves integrity and reduces duplication but may increase join complexity (slower reads). Denormalization duplicates data to speed reads at the cost of slower writes and potential inconsistencies.</p>
+    </div>
+
+    <div class="qa">
+      <h3>ACID properties and why they matter</h3>
+      <p><span class="answer-label">Answer:</span> <b>Atomicity</b> (all-or-nothing), <b>Consistency</b> (valid state transitions), <b>Isolation</b> (concurrent transactions don’t interfere), <b>Durability</b> (committed data persists even after crashes). They ensure reliable transactions.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Indexes: types, pros/cons, and when to use</h3>
+      <p><span class="answer-label">Answer:</span> Common types: B-Tree (range queries), Hash (equality lookups), Full-text, GiST/GIN (Postgres). Indexes speed reads and filters but slow writes and use space.</p>
+      <pre><code class="language-sql">CREATE INDEX idx_users_email ON users(email);
+EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'a@b.com';</code></pre>
+    </div>
+
+    <div class="qa">
+      <h3>Primary key vs Unique key vs Foreign key</h3>
+      <p><span class="answer-label">Answer:</span> <b>Primary key</b> uniquely identifies rows (not null). <b>Unique key</b> enforces uniqueness (nullable in many DBs). <b>Foreign key</b> enforces referential integrity to another table, optionally with <code>ON DELETE/UPDATE</code> actions.</p>
+    </div>
+
+    <div class="qa">
+      <h3>JOIN types and use-cases</h3>
+      <p><span class="answer-label">Answer:</span> INNER (matches), LEFT/RIGHT (preserve one side), FULL (preserve both), CROSS (cartesian), SELF (same table).</p>
+      <pre><code class="language-sql">SELECT u.name, o.total
+FROM users u
+LEFT JOIN orders o ON o.user_id = u.id;</code></pre>
+    </div>
+
+    <div class="qa">
+      <h3>WHERE vs HAVING</h3>
+      <p><span class="answer-label">Answer:</span> <b>WHERE</b> filters rows before aggregation; <b>HAVING</b> filters after aggregation.</p>
+      <pre><code class="language-sql">SELECT dept, COUNT(*) c
+FROM employees
+WHERE active = true
+GROUP BY dept
+HAVING COUNT(*) &gt; 5;</code></pre>
+    </div>
+
+    <div class="qa">
+      <h3>Clustered vs non-clustered index</h3>
+      <p><span class="answer-label">Answer:</span> <b>Clustered</b> defines physical row order (often one per table, e.g., InnoDB PK). <b>Non-clustered</b> is a separate structure with pointers (many allowed).</p>
+    </div>
+
+    <div class="qa">
+      <h3>Transactions and isolation levels—anomalies</h3>
+      <p><span class="answer-label">Answer:</span> Isolation levels: Read Uncommitted (dirty reads), Read Committed (no dirty reads, possible non-repeatable), Repeatable Read (no non-repeatable, phantom possible), Serializable (no anomalies, lowest concurrency). Choose based on correctness vs throughput.</p>
+    </div>
+
+    <div class="qa">
+      <h3>SQL injection and prevention</h3>
+      <p><span class="answer-label">Answer:</span> Avoid string concatenation; use parameterized queries or prepared statements.</p>
+      <pre><code class="language-sql">-- BAD: "SELECT * FROM users WHERE email='" + input + "'"
+-- GOOD:
+PREPARE stmt FROM 'SELECT * FROM users WHERE email = ?';
+EXECUTE stmt USING @email;</code></pre>
+    </div>
+
+    <div class="qa">
+      <h3>CAP theorem and distributed databases</h3>
+      <p><span class="answer-label">Answer:</span> Under a network partition, a system must choose <b>Consistency</b> or <b>Availability</b>, not both. CP systems (e.g., majority writes) favor consistency; AP systems (Dynamo-style) favor availability.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Sharding vs replication</h3>
+      <p><span class="answer-label">Answer:</span> <b>Sharding</b> splits data across nodes (scales writes/size). <b>Replication</b> copies data for reliability and read scaling. Often combined.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Partitioning strategies (RDBMS)</h3>
+      <p><span class="answer-label">Answer:</span> Range, list, hash, composite. Benefits: pruning, parallelism, manageability.</p>
+      <pre><code class="language-sql">-- Postgres declarative partitioning (range)
+CREATE TABLE events (id bigserial, ts date) PARTITION BY RANGE (ts);</code></pre>
+    </div>
+
+    <div class="qa">
+      <h3>OLTP vs OLAP</h3>
+      <p><span class="answer-label">Answer:</span> <b>OLTP</b>: many small transactions, normalized. <b>OLAP</b>: analytics on large data; denormalized star/snowflake schemas; columnar stores common.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Query planning and performance</h3>
+      <p><span class="answer-label">Answer:</span> Use <code>EXPLAIN</code>, ensure selective indexes, avoid N+1 queries, watch for table scans, keep stats updated, and rewrite queries to leverage indexes.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Views vs materialized views</h3>
+      <p><span class="answer-label">Answer:</span> <b>Views</b> are virtual (computed on read). <b>Materialized views</b> store results; faster reads, need refresh policies.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Stored procedures and triggers—pros/cons</h3>
+      <p><span class="answer-label">Answer:</span> Centralize logic near data, enforce rules; can complicate versioning, portability, and debugging—use judiciously.</p>
+    </div>
+
+    <div class="qa">
+      <h3>NoSQL data models (with examples)</h3>
+      <ul>
+        <li><b>Document</b>: Flexible JSON per entity; embed vs reference trade-offs.</li>
+        <li><b>Key-value</b>: Ultra-fast lookups; limited querying.</li>
+        <li><b>Wide-column</b>: Time-series/huge sparse datasets.</li>
+        <li><b>Graph</b>: Relationship-heavy queries (shortest path, recommendations).</li>
+      </ul>
+    </div>
+
+    <h2>Object-Oriented Programming (OOP)</h2>
+    <div class="qa">
+      <h3>Four OOP pillars with short examples</h3>
+      <p><span class="answer-label">Answer:</span> <b>Encapsulation</b> (hide state via accessors), <b>Abstraction</b> (expose essential behavior via interfaces), <b>Inheritance</b> (reuse/extend base), <b>Polymorphism</b> (same interface, different implementations).</p>
+    </div>
+
+    <div class="qa">
+      <h3>Overloading vs overriding</h3>
+      <p><span class="answer-label">Answer:</span> <b>Overloading</b>: same name, different parameters (compile-time polymorphism). <b>Overriding</b>: subclass changes base method behavior (runtime via dynamic dispatch).</p>
+    </div>
+
+    <div class="qa">
+      <h3>Interface vs abstract class—how to choose?</h3>
+      <p><span class="answer-label">Answer:</span> Use <b>interfaces</b> for capability contracts and multiple implementations; use an <b>abstract class</b> for shared base state/logic and constrained extension.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Composition over inheritance—why?</h3>
+      <p><span class="answer-label">Answer:</span> Composition (<i>has-a</i>) avoids tight coupling and fragile base class issues; lets you swap behaviors at runtime (Strategy pattern).</p>
+    </div>
+
+    <div class="qa">
+      <h3>SOLID principles (quick)</h3>
+      <ul>
+        <li><b>Single Responsibility</b>: one reason to change.</li>
+        <li><b>Open/Closed</b>: open to extension, closed to modification.</li>
+        <li><b>Liskov Substitution</b>: subtypes must be usable as base types.</li>
+        <li><b>Interface Segregation</b>: small, specific interfaces.</li>
+        <li><b>Dependency Inversion</b>: depend on abstractions; inject dependencies.</li>
+      </ul>
+    </div>
+
+    <div class="qa">
+      <h3>Shallow vs deep copy</h3>
+      <p><span class="answer-label">Answer:</span> Shallow copies references; deep copy recursively duplicates nested objects to avoid shared mutable state.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Immutability—benefits</h3>
+      <p><span class="answer-label">Answer:</span> Thread-safety by design, easier reasoning, safer sharing. Use builders or copy-on-write patterns.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Exceptions—checked vs unchecked</h3>
+      <p><span class="answer-label">Answer:</span> <b>Checked</b> must be declared/handled (recoverable conditions). <b>Unchecked</b> represent programming errors (null pointer, illegal state).</p>
+    </div>
+
+    <div class="qa">
+      <h3>Common patterns and when to use</h3>
+      <ul>
+        <li><b>Singleton</b>: shared instance (watch testability).</li>
+        <li><b>Factory</b>: decouple creation logic.</li>
+        <li><b>Strategy</b>: swap algorithms at runtime.</li>
+        <li><b>Observer</b>: events/callbacks.</li>
+        <li><b>Adapter</b>: interface compatibility.</li>
+      </ul>
+    </div>
+
+    <h2>Operating Systems</h2>
+    <div class="qa">
+      <h3>Process vs thread; PCB/TCB</h3>
+      <p><span class="answer-label">Answer:</span> A <b>process</b> has its own address space; PCB stores its state. A <b>thread</b> shares the process memory; TCB stores thread context. Threads improve concurrency within a process.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Context switching—costs</h3>
+      <p><span class="answer-label">Answer:</span> Save/restore registers and memory maps; cache/TLB effects cause overhead. Excessive switching reduces performance.</p>
+    </div>
+
+    <div class="qa">
+      <h3>CPU-bound vs I/O-bound tasks</h3>
+      <p><span class="answer-label">Answer:</span> CPU-bound saturate CPU—schedule to maximize CPU utilization. I/O-bound often waits—use async I/O and more concurrency.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Scheduling algorithms and trade-offs</h3>
+      <p><span class="answer-label">Answer:</span> FCFS (simple, convoy effect), SJF/SRTF (great avg wait; needs prediction), Priority (starvation risk), Round Robin (fairness, time slice choice), Multilevel queues (class-based policies).</p>
+    </div>
+
+    <div class="qa">
+      <h3>Deadlock—conditions and handling</h3>
+      <p><span class="answer-label">Answer:</span> Conditions: mutual exclusion, hold-and-wait, no preemption, circular wait. Prevent with ordering, timeouts; detect via wait-for graphs; recover by killing/rollback.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Mutex vs semaphore</h3>
+      <p><span class="answer-label">Answer:</span> <b>Mutex</b> is owned by the locker; mutual exclusion. <b>Semaphore</b> is counting-based signaling (e.g., resource pools).</p>
+      <pre><code class="language-c">// Pseudocode
+wait(mutex);  // lock
+// critical section
+signal(mutex); // unlock</code></pre>
+    </div>
+
+    <div class="qa">
+      <h3>Paging, segmentation, and virtual memory</h3>
+      <p><span class="answer-label">Answer:</span> Paging uses fixed-size pages/frames (no external fragmentation). Segmentation is variable-sized logical units. Virtual memory maps virtual pages to physical frames with on-demand paging.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Page faults and replacement algorithms</h3>
+      <p><span class="answer-label">Answer:</span> On fault, OS loads from disk; select victim via FIFO, LRU, Optimal (theoretical), or Clock (approx LRU). Thrashing occurs when the working set exceeds RAM.</p>
+    </div>
+
+    <div class="qa">
+      <h3>User vs kernel mode; system calls</h3>
+      <p><span class="answer-label">Answer:</span> Kernel mode has full privileges; user mode is restricted. System calls are controlled entry points (open, read, write, fork, exec, wait).</p>
+    </div>
+
+    <div class="qa">
+      <h3>File systems—inode and journaling</h3>
+      <p><span class="answer-label">Answer:</span> Inodes store metadata and block pointers. Journaling logs intent to maintain consistency after crashes (e.g., ext4, NTFS).</p>
+    </div>
+
+    <div class="qa">
+      <h3>Interrupts and traps</h3>
+      <p><span class="answer-label">Answer:</span> <b>Interrupts</b> are async hardware signals. <b>Traps</b> are synchronous exceptions or system call entries.</p>
+    </div>
+
+    <h2>Computer Networks</h2>
+    <div class="qa">
+      <h3>OSI vs TCP/IP—mapping</h3>
+      <p><span class="answer-label">Answer:</span> OSI (7 layers) vs TCP/IP (4–5 layers). Mapping: Application ↔ OSI 5–7; Transport ↔ OSI 4; Internet ↔ OSI 3; Link/Physical ↔ OSI 1–2.</p>
+    </div>
+
+    <div class="qa">
+      <h3>TCP vs UDP—details</h3>
+      <p><span class="answer-label">Answer:</span> <b>TCP</b>: connection-oriented, reliable, ordered; flow control (<code>rwnd</code>), congestion control (AIMD), retransmissions (RTO). <b>UDP</b>: connectionless, best-effort datagrams; used for DNS, VoIP, streaming.</p>
+    </div>
+
+    <div class="qa">
+      <h3>TCP three-way handshake and teardown</h3>
+      <p><span class="answer-label">Answer:</span> Handshake: SYN → SYN-ACK → ACK. Teardown: FIN/ACK exchange; TIME_WAIT avoids interference from stray segments.</p>
+    </div>
+
+    <div class="qa">
+      <h3>HTTP/1.1 vs HTTP/2 vs HTTP/3</h3>
+      <p><span class="answer-label">Answer:</span> 1.1: keep-alive, HoL blocking at app level. 2: multiplexing over one TCP, HPACK. 3: QUIC over UDP, 0‑RTT, avoids TCP HoL blocking.</p>
+    </div>
+
+    <div class="qa">
+      <h3>REST vs RPC (gRPC)</h3>
+      <p><span class="answer-label">Answer:</span> <b>REST</b> uses resources and HTTP verbs; loosely coupled. <b>RPC/gRPC</b> defines service contracts and binary protocols (Protobuf) for high performance and streaming.</p>
+    </div>
+
+    <div class="qa">
+      <h3>DNS resolution flow</h3>
+      <p><span class="answer-label">Answer:</span> Stub resolver → recursive resolver → root → TLD → authoritative; caching reduces latency. Records: A/AAAA, CNAME, MX, TXT, NS.</p>
+    </div>
+
+    <div class="qa">
+      <h3>IP addressing and CIDR—quick example</h3>
+      <p><span class="answer-label">Answer:</span> <code>192.168.1.0/24</code> has 256 addresses (254 usable). Subnetting /26 yields 4 subnets of 64 addresses each.</p>
+    </div>
+
+    <div class="qa">
+      <h3>NAT and port translation</h3>
+      <p><span class="answer-label">Answer:</span> Maps many private IPs to a public IP via port mapping (PAT). Conserves IPv4 and adds a basic isolation layer.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Routing basics (intra vs inter-domain)</h3>
+      <p><span class="answer-label">Answer:</span> Intra: OSPF/IS‑IS (link-state). Inter: BGP (path-vector, policy-driven). Routers forward using longest prefix match.</p>
+    </div>
+
+    <div class="qa">
+      <h3>TLS handshake (simplified)</h3>
+      <p><span class="answer-label">Answer:</span> ClientHello/ServerHello, certificate exchange/verification, key exchange (ECDHE), Finished messages; then encrypted application data.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Latency, bandwidth, jitter—impacts</h3>
+      <p><span class="answer-label">Answer:</span> <b>Latency</b> = delay; <b>bandwidth</b> = capacity; <b>jitter</b> = delay variation. Real-time apps are latency/jitter-sensitive; bulk transfer is bandwidth-sensitive.</p>
+    </div>
+
+    <h2>Practice Snippets</h2>
+    <div class="qa">
+      <h3>SQL: 2nd highest salary per department</h3>
+      <pre><code class="language-sql">SELECT dept, MAX(salary) AS second_highest
+FROM (
+  SELECT dept, salary,
+         DENSE_RANK() OVER (PARTITION BY dept ORDER BY salary DESC) rnk
+  FROM employees
+) t
+WHERE rnk = 2
+GROUP BY dept;</code></pre>
+    </div>
+
+    <div class="qa">
+      <h3>MongoDB: users created in last 7 days with verified email</h3>
+      <pre><code class="language-js">db.users.find({
+  emailVerified: true,
+  createdAt: { $gte: new Date(Date.now() - 7*24*60*60*1000) }
+});</code></pre>
+    </div>
+
+    <div class="qa">
+      <h3>Prevent race condition on balance update (SQL)</h3>
+      <pre><code class="language-sql">BEGIN;
+SELECT balance FROM accounts WHERE id = 1 FOR UPDATE;
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+COMMIT;</code></pre>
+    </div>
+
+    <div class="qa">
+      <h3>Semaphore for a connection pool (pseudocode)</h3>
+      <pre><code class="language-c">wait(sem);   // acquire slot
+conn = getConn();
+// use conn
+releaseConn(conn);
+signal(sem); // release slot</code></pre>
+    </div>
+
+    <p class="tip">Tip: Bring up trade-offs (consistency vs availability, composition vs inheritance, isolation levels vs anomalies) to stand out in interviews.</p>
+  </div>
+</body>
+</html> 
